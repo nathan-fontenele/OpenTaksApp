@@ -21,12 +21,11 @@ public class UserModel
     public string  LastName{ get; set; }
     
     [NotNull]
+    [Required]
+    public string  Email{ get; set; }
+    
+    [NotNull]
     [MaxLength(50)]
     [Required]
     public string Password { get; set; }
-    
-    [NotNull]
-    [DataType( DataType.DateTime )]
-    [Required]
-    public DateTime Birthday { get; set; }
 }

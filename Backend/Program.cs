@@ -1,5 +1,6 @@
 using Backend.Data;
 using Backend.Model;
+using Backend.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserDAO>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,5 +1,4 @@
 ﻿using Backend.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -10,16 +9,17 @@ public class UserController : ControllerBase
 {
     private readonly UserService _userService;
 
-    public UserController()
+    // Constructor Injection of UserService
+    public UserController(UserService userService)
     {
-        _userService = new UserService();
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
     
     [HttpPost]
     [ActionName("CreateUser")]
-    public IActionResult CreateUser(string username)
+    public IActionResult CreateUser(string firstname, string lastname, string email, string password)
     {
-        _userService.AddUser(username);
+        _userService.AddUser(firstname, lastname, email, password);
         return Ok();
     }
 
