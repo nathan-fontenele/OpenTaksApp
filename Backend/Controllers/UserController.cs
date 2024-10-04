@@ -9,13 +9,13 @@ public class UserController : ControllerBase
 {
     private readonly UserService _userService;
 
-    // Constructor Injection of UserService
     public UserController(UserService userService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
     
     [HttpPost]
+    [Route("CreateUser")]
     [ActionName("CreateUser")]
     public IActionResult CreateUser(string firstname, string lastname, string email, string password)
     {
@@ -24,10 +24,21 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetAllUsers")]
     [ActionName("GetUsers")]
     public IActionResult GetUsers()
     {
         var users = _userService.GetUsers();
         return Ok(users);
     }
+    
+    [HttpGet]
+    [Route("Login")]
+    [ActionName("Login")]
+    public IActionResult Login(string email, string password)
+    {
+        var user = _userService.Login(email, password);
+        return Ok(user);
+    }
+    
 }

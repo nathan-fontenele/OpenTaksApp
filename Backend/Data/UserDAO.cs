@@ -24,6 +24,29 @@ public class UserDAO
         _context.SaveChanges();
     }
     
+    public bool GetUserByEmail(string email)
+    {
+        bool existingUser = _context.Users.Any(u => u.Email == email);
+        
+        if (existingUser)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public List<string> Login(string email)
+    {
+        var userProperties = _context.Users
+            .Where(u => u.Email == email)
+            .Select(u => new List<string>{u.FirstName, u.LastName, u.Email, u.Password})
+            .FirstOrDefault();
+        
+        return userProperties;
+    }
+    
     public List<UserModel> GetUsers()
     {
         return _context.Users.ToList();
