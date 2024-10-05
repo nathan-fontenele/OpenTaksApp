@@ -5,16 +5,16 @@ namespace Backend.Services;
 
 public class UserService
 {
-    private UserDAO _userDAO;
+    private UserRepository _userRepository;
     
-    public UserService(UserDAO userDAO)
+    public UserService(UserRepository userRepository)
     {
-        _userDAO = userDAO ?? throw new ArgumentNullException(nameof(userDAO));
+        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
     }
 
     public void AddUser(string firstname, string lastname, string email, string password)
     {
-        var existingUser = _userDAO.GetUserByEmail(email);
+        var existingUser = _userRepository.GetUserByEmail(email);
         
         if (string.IsNullOrEmpty(firstname) || string.IsNullOrEmpty(lastname) ||
             string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -29,17 +29,17 @@ public class UserService
         
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         
-        _userDAO.AddUser(firstname, lastname, email, passwordHash);
+        _userRepository.AddUser(firstname, lastname, email, passwordHash);
     }
 
     public List<UserModel> GetUsers()
     {
-        return _userDAO.GetUsers();
+        return _userRepository.GetUsers();
     }
     
     public List<string> Login(string email, string password)
     {
-        var user = _userDAO.Login(email);
+        var user = _userRepository.Login(email);
         var userHash = user[3];
         
         if (user == null)

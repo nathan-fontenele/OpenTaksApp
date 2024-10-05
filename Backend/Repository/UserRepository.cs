@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data;
 
-public class UserDAO
+public class UserRepository
 {
     private AppDbContext _context;
     private UserModel _userModel;
     
-    public UserDAO()
+    public UserRepository()
     {
         _context = new AppDbContext(new DbContextOptions<AppDbContext>());
         _userModel = new UserModel();
@@ -41,7 +41,7 @@ public class UserDAO
     {
         var userProperties = _context.Users
             .Where(u => u.Email == email)
-            .Select(u => new List<string>{u.FirstName, u.LastName, u.Email, u.Password})
+            .Select(u => new List<string>{u.FirstName, u.LastName, u.Email})
             .FirstOrDefault();
         
         return userProperties;

@@ -1,5 +1,6 @@
 ﻿using Backend.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Backend.Data;
 
@@ -11,12 +12,16 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<UserModel> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public DbSet<TaskModel> Tasks { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite("Data Source=App.db");
-        }
+        modelBuilder.Entity<TaskModel>()
+            .HasOne(t => t.CreatedBy) // Uma tarefa tem um usuário criador
+            .WithMany(u => u.Tasks)   // Um usuário pode ter várias tarefas
+            .HasForeignKey(t => t.CreatedByUserId) // Chave estrangeira em Task
+            .OnDelete(DeleteBehavior.Cascade);     // Exclusão em cascata
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

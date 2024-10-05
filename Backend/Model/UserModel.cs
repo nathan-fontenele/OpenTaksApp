@@ -8,7 +8,7 @@ namespace Backend.Model;
 public class UserModel
 {
     [Key]
-    public int ID { get; set; }
+    public Guid ID { get; set; }
     
     [NotNull]
     [MaxLength(50)]
@@ -22,10 +22,13 @@ public class UserModel
     
     [NotNull]
     [Required]
+    [EmailAddress]
     public string  Email{ get; set; }
     
     [NotNull]
     [MaxLength(50)]
     [Required]
     public string Password { get; set; }
+    
+    public ICollection<TaskModel> Tasks { get; set; }
 }
